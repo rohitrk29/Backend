@@ -1,1 +1,1 @@
-export const DB_NAME = "root"
+export const DB_NAME = "rohitdb"
