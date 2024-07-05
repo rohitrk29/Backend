@@ -38,7 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 
     const {fullName, email, username, password } = req.body
-    // console.log("email:", email);
+    console.log("email:", email);
 
     // if(fullName === ""){
     //     throw new ApiError(400, "fullname is required")
@@ -59,9 +59,11 @@ const registerUser = asyncHandler(async (req, res) => {
     if(existedUser){
         throw new ApiError(409, "User with email or username already exists")
     }
+    console.log(req.files);
 
     // localfilepath return by multer as avatarLocalPath
     const avatarLocalPath = req.files?.avatar[0]?.path;
+    // console.log(avatarLocalPath);
     // const coverImageLocalPath = req.files?.coverImage[0]?.path;
     // or
     let coverImageLocalPath;
@@ -77,7 +79,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
     if(!avatar){
-        throw new ApiError(400, "Avatar file is required")
+        throw new ApiError(400, "Avatar file is not uploaded")
     }
 
 
@@ -88,7 +90,7 @@ const registerUser = asyncHandler(async (req, res) => {
         email,
         password,
         username: username.toLowerCase()
-    })
+    })   
 
     // mongodb automatically add _id to each entry in database.
     const createdUser = await User.findById(user._id).select("-password -refreshToken") //.select use to select specific element otherwise bydefault all are selected.
