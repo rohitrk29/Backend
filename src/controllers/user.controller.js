@@ -15,7 +15,7 @@ const generateAccessAndRefreshTokens = async(userId) => {
         await user.save({ validateBeforeSave: false })
 
         return {accessToken, refreshToken}
-
+        
 
     } catch (error) {
         throw new ApiError(500, "Something went wrong while generating refresh and access token")
@@ -145,8 +145,8 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
-    const options = {
-        httpOnly: true,
+    const options = {    //sending cookies , options is object
+        httpOnly: true,   //these two insure the security of the cookies, which can be only modify from server side not from the frontend
         secure: true
     }
 
